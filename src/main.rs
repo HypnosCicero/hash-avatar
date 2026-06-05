@@ -1,3 +1,5 @@
+use std::io::{Error, Read};
+
 fn main() {
     let case_simple: &str = "Hello World";
     let case_distribution1 = "test1";
@@ -11,24 +13,40 @@ fn main() {
         the whole string must be one word, so the entire string should be returned.";
 
     // test simple case
-    let processed_case_simple = hash_process_simple(case_simple.as_bytes());
+    let processed_case_simple = lrc_hash_ultra(case_simple);
     println!("Test simple funtion result:");
-    println!("processed_case_simple = {processed_case_simple}\n");
 
     // test distribution case
-    let processed_case_distribution1 = hash_process_simple(case_distribution1.as_bytes());
-    let processed_case_distribution2 = hash_process_simple(case_distribution2.as_bytes());
+    // let processed_case_distribution1 = hash_process_simple(case_distribution1.as_bytes());
+    // let processed_case_distribution2 = hash_process_simple(case_distribution2.as_bytes());
     println!("Test simple function distribution result:");
-    println!("processed_case_distribution1 = {processed_case_distribution1}");
-    println!("processed_case_distribution2 = {processed_case_distribution2}");
+    // println!("processed_case_distribution1 = {processed_case_distribution1}");
+    // println!("processed_case_distribution2 = {processed_case_distribution2}");
 
     // test long test case
-    let processed_case_long_text = hash_process_simple(case_long_text.as_bytes());
+    // let processed_case_long_text = hash_process_simple(case_long_text.as_bytes());
     println!("Test simple function long text result:");
-    println!("processed_case_long_text = {processed_case_long_text}");
+    // println!("processed_case_long_text = {processed_case_long_text}");
 }
 
-fn hash_process_simple(target: &[u8]) -> String {
-    let group_number = 255;
-    return String::from("");
+fn lrc_hash_ultra(target: &str) {
+    let orgin_data = target.as_bytes();
+    let mut temp_vector: Vec<u8> = Vec::new();
+    for temp_data in orgin_data {
+        let mut i = 7;
+        while i >= 0 {
+            // check out the
+            let data = *temp_data >> i & 1;
+            temp_vector.push(data);
+            i -= 1;
+        }
+    }
+    print_vector(&temp_vector);
+}
+
+fn print_vector(vector: &Vec<u8>) {
+    for e in vector {
+        print!("{}", *e);
+    }
+    println!();
 }
