@@ -13,7 +13,7 @@ fn main() {
         the whole string must be one word, so the entire string should be returned.";
 
     // test simple case
-    let processed_case_simple = lrc_hash_ultra(case_simple);
+    let processed_case_simple = lrc_hash_v1(case_simple);
     println!("Test simple funtion result:");
 
     // test distribution case
@@ -29,7 +29,7 @@ fn main() {
     // println!("processed_case_long_text = {processed_case_long_text}");
 }
 
-fn lrc_hash_ultra(target: &str) {
+fn lrc_hash_v1(target: &str) {
     let orgin_data = target.as_bytes();
     let mut temp_vector: Vec<u8> = Vec::new();
     for temp_data in orgin_data {
@@ -39,6 +39,15 @@ fn lrc_hash_ultra(target: &str) {
             let data = *temp_data >> i & 1;
             temp_vector.push(data);
             i -= 1;
+        }
+    }
+    print_vector(&temp_vector);
+    let remainder = temp_vector.len() % 7;
+    if remainder > 0 {
+        let mut index = 0;
+        while index < (7 - remainder) {
+            temp_vector.push(0);
+            index += 1;
         }
     }
     print_vector(&temp_vector);
