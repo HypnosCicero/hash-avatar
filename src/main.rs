@@ -1,5 +1,3 @@
-use std::io::{Error, Read};
-
 fn main() {
     let case_simple: &str = "Hello World";
     let case_distribution1 = "test1";
@@ -11,9 +9,10 @@ fn main() {
         returns the first word it finds in that string. \
         If the function doesn’t find a space in the string, \
         the whole string must be one word, so the entire string should be returned.";
+    let case_with_utf8 = "你好";
 
     // test simple case
-    let processed_case_simple = lrc_hash_v1(case_simple);
+    let processed_case_simple = lrc_hash_v1(case_simple, 7);
     println!("Test simple funtion result:");
 
     // test distribution case
@@ -29,7 +28,7 @@ fn main() {
     // println!("processed_case_long_text = {processed_case_long_text}");
 }
 
-fn lrc_hash_v1(target: &str) {
+fn lrc_hash_v1(target: &str, code_length: usize) {
     let orgin_data = target.as_bytes();
     let mut temp_vector: Vec<u8> = Vec::new();
     for temp_data in orgin_data {
@@ -42,7 +41,6 @@ fn lrc_hash_v1(target: &str) {
         }
     }
     print_vector(&temp_vector);
-    let code_length = 7;
     let remainder = temp_vector.len() % code_length;
     if remainder > 0 {
         let mut index = 0;
@@ -51,6 +49,17 @@ fn lrc_hash_v1(target: &str) {
             index += 1;
         }
     }
+
+    print_vector(&temp_vector);
+
+    if temp_vector.len() / code_length == 1 {
+        let mut index = 0;
+        while index < code_length {
+            temp_vector.push(0);
+            index += 1;
+        }
+    }
+
     print_vector(&temp_vector);
 }
 
