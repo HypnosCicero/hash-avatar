@@ -42,10 +42,11 @@ fn lrc_hash_v1(target: &str) {
         }
     }
     print_vector(&temp_vector);
-    let remainder = temp_vector.len() % 7;
+    let code_length = 7;
+    let remainder = temp_vector.len() % code_length;
     if remainder > 0 {
         let mut index = 0;
-        while index < (7 - remainder) {
+        while index < (code_length - remainder) {
             temp_vector.push(0);
             index += 1;
         }
