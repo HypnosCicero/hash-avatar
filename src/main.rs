@@ -12,7 +12,7 @@ fn main() {
     let case_with_utf8 = "你好";
 
     // test simple case
-    let processed_case_simple = lrc_hash_v1(case_simple, 7);
+    // let processed_case_simple = lrc_hash_v1(case_simple, 128);
     println!("Test simple funtion result:");
 
     // test distribution case
@@ -23,9 +23,8 @@ fn main() {
     // println!("processed_case_distribution2 = {processed_case_distribution2}");
 
     // test long test case
-    // let processed_case_long_text = hash_process_simple(case_long_text.as_bytes());
+    let processed_case_long_text = lrc_hash_v1(case_long_text, 128);
     println!("Test simple function long text result:");
-    // println!("processed_case_long_text = {processed_case_long_text}");
 }
 
 fn lrc_hash_v1(target: &str, code_length: usize) {
@@ -49,6 +48,7 @@ fn lrc_hash_v1(target: &str, code_length: usize) {
             index += 1;
         }
     }
+    let test_vector_a = temp_vector.clone();
 
     print_vector(&temp_vector);
 
@@ -61,6 +61,43 @@ fn lrc_hash_v1(target: &str, code_length: usize) {
     }
 
     print_vector(&temp_vector);
+
+    // TODO: the process method mite be error
+    let mut len_time = 0;
+    let mut reuslt_vector: Vec<u8> = Vec::new();
+    println!("\nstart process");
+    while len_time < (temp_vector.len() / code_length) / 2 {
+        //pent is process each number time
+        let mut pent = 0;
+        println!("start process innel");
+        while pent < code_length {
+            println!("now the first index {}", len_time * code_length + pent);
+            println!(
+                "now the first result {}",
+                temp_vector[len_time * code_length + pent]
+            );
+            println!("now the second index {}", len_time * code_length + pent);
+            println!(
+                "now the second resutl {}",
+                temp_vector[(len_time + 1) * code_length + pent]
+            );
+            let result_x = temp_vector[len_time * code_length + pent]
+                ^ temp_vector[(len_time + 1) * code_length + pent];
+            println!("there are reuslt {}\n", result_x);
+            reuslt_vector.push(result_x);
+            pent += 1;
+        }
+        len_time += 2;
+    }
+    println!("end process\n");
+
+    println!("two vector compare");
+    print_vector(&reuslt_vector);
+    print_vector(&test_vector_a);
+    println!(
+        "are they same ? a: {}",
+        jugetment_same(&test_vector_a, &reuslt_vector)
+    );
 }
 
 fn print_vector(vector: &Vec<u8>) {
@@ -68,4 +105,15 @@ fn print_vector(vector: &Vec<u8>) {
         print!("{}", *e);
     }
     println!();
+}
+
+fn jugetment_same(vector_a: &Vec<u8>, vector_b: &Vec<u8>) -> bool {
+    let mut index = 0;
+    while index < vector_a.len() {
+        if vector_a[index] != vector_b[index] {
+            return false;
+        }
+        index += 1;
+    }
+    true
 }
