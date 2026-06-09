@@ -66,7 +66,7 @@ fn lrc_hash_v1(target: &str, code_length: usize) {
 
     // TODO: the process method mite be error
     let mut len_time = 0;
-    let mut reuslt_vector: Vec<u8> = Vec::new();
+    let mut result_vector: Vec<u8> = Vec::new();
     println!("\nstart process");
     while len_time < (temp_vector.len() / code_length) / 2 {
         //pent is process each number time
@@ -86,7 +86,7 @@ fn lrc_hash_v1(target: &str, code_length: usize) {
             let result_x = temp_vector[len_time * code_length + pent]
                 ^ temp_vector[(len_time + 1) * code_length + pent];
             println!("there are reuslt {}\n", result_x);
-            reuslt_vector.push(result_x);
+            result_vector.push(result_x);
             pent += 1;
         }
         len_time += 2;
@@ -94,16 +94,16 @@ fn lrc_hash_v1(target: &str, code_length: usize) {
     println!("end process\n");
 
     println!("two vector compare");
-    print_vector(&reuslt_vector);
+    print_vector(&result_vector);
     print_vector(&test_vector_a);
     println!(
         "are they same ? a: {}",
-        jugetment_same(&test_vector_a, &reuslt_vector)
+        jugetment_same(&test_vector_a, &result_vector)
     );
-    println!(
-        "they length are diff = {}",
-        test_vector_a.len() - reuslt_vector.len()
-    );
+
+    if result_vector.len() != code_length {
+        println!("this result vector is ILLEGAL!!");
+    }
 }
 
 fn print_vector(vector: &Vec<u8>) {
