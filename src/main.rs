@@ -1,3 +1,5 @@
+use std::result;
+
 fn main() {
     let case_simple: &str = "Hello World";
     let case_distribution1 = "test1";
@@ -97,6 +99,10 @@ fn lrc_hash_v1(target: &str, code_length: usize) {
     println!(
         "are they same ? a: {}",
         jugetment_same(&test_vector_a, &reuslt_vector)
+    );
+    println!(
+        "they length are diff = {}",
+        test_vector_a.len() - reuslt_vector.len()
     );
 }
 
