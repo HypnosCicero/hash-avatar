@@ -65,8 +65,9 @@ fn lrc_hash_v1(target: &str, code_length: usize) {
     print_vector(&temp_vector);
 
     // TODO: the process method mite be error
-    let mut len_time = 0;
+    let mut len_time = 1;
     let mut result_vector: Vec<u8> = Vec::new();
+    result_vector.clone_from_slice(&temp_vector[..code_length]);
     println!("\nstart process");
     while len_time < (temp_vector.len() / code_length) / 2 {
         //pent is process each number time
