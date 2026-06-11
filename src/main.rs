@@ -65,38 +65,31 @@ fn lrc_hash_v1(target: &str, code_length: usize) {
     print_vector(&temp_vector);
 
     // TODO: the process method mite be error
-    let mut len_time = 1;
-    let mut result_vector: Vec<u8> = Vec::new();
-    result_vector.clone_from_slice(&temp_vector[..code_length]);
+    let mut len_time = 0;
+    let mut result_vector: Vec<u8> = Vec::from(&temp_vector[..code_length]);
+    println!("clone finished");
+    print_vector(&result_vector);
     println!("\nstart process");
-    while len_time < (temp_vector.len() / code_length) / 2 {
+    while len_time < (temp_vector.len() / code_length) - 1 {
         //pent is process each number time
         let mut pent = 0;
         println!("start process innel");
         while pent < code_length {
-            println!("now the first index {}", len_time * code_length + pent);
-            println!(
-                "now the first result {}",
-                temp_vector[len_time * code_length + pent]
-            );
+            println!("now the first index {}", pent);
+            println!("now the first result {}", result_vector[pent]);
             println!("now the second index {}", len_time * code_length + pent);
             println!(
                 "now the second resutl {}",
                 temp_vector[(len_time + 1) * code_length + pent]
             );
-            let result_x = temp_vector[len_time * code_length + pent]
-                ^ temp_vector[(len_time + 1) * code_length + pent];
+            let result_x = result_vector[pent] ^ temp_vector[(len_time + 1) * code_length + pent];
             println!("there are reuslt {}\n", result_x);
-            result_vector.push(result_x);
+            result_vector[pent] = result_x;
             pent += 1;
         }
-        len_time += 2;
+        len_time += 1;
     }
     println!("end process\n");
-
-    println!("two vector compare");
-    print_vector(&result_vector);
-    print_vector(&test_vector_a);
     println!(
         "are they same ? a: {}",
         jugetment_same(&test_vector_a, &result_vector)
@@ -105,6 +98,7 @@ fn lrc_hash_v1(target: &str, code_length: usize) {
     if result_vector.len() != code_length {
         println!("this result vector is ILLEGAL!!");
     }
+    println!("this result vector is LEGALL!!!!!!");
 }
 
 fn print_vector(vector: &Vec<u8>) {
