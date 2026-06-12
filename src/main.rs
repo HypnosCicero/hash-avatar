@@ -1,7 +1,5 @@
-use std::result;
-
 fn main() {
-    let case_simple: &str = "Hello World";
+    let case_simple = "Hello World";
     let case_distribution1 = "test1";
     let case_distribution2 = "test2";
     let case_long_text = "Slices let you reference a contiguous sequence of elements in a collection. \
@@ -15,7 +13,7 @@ fn main() {
 
     // test simple case
     let processed_case_simple = lrc_hash_v1(case_simple, 128);
-    println!("Test simple funtion result:");
+    println!("Test simple funtion result: {}", processed_case_simple);
 
     // test distribution case
     // let processed_case_distribution1 = hash_process_simple(case_distribution1.as_bytes());
@@ -25,11 +23,14 @@ fn main() {
     // println!("processed_case_distribution2 = {processed_case_distribution2}");
 
     // test long test case
-    // let processed_case_long_text = lrc_hash_v1(case_long_text, 128);
-    println!("Test simple function long text result:");
+    let processed_case_long_text = lrc_hash_v1(case_long_text, 128);
+    println!(
+        "Test simple function long text result: {}",
+        processed_case_long_text
+    );
 }
 
-fn lrc_hash_v1(target: &str, code_length: usize) {
+fn lrc_hash_v1(target: &str, code_length: usize) -> String {
     let orgin_data = target.as_bytes();
     let mut temp_vector: Vec<u8> = Vec::new();
     for temp_data in orgin_data {
@@ -99,6 +100,14 @@ fn lrc_hash_v1(target: &str, code_length: usize) {
         println!("this result vector is ILLEGAL!!");
     }
     println!("this result vector is LEGALL!!!!!!");
+    let result = match String::from_utf8(result_vector) {
+        Ok(string) => string,
+        Err(e) => {
+            panic!("decoding error becose: {}", e);
+        }
+    };
+    println!("The Result = {}", result);
+    result
 }
 
 fn print_vector(vector: &Vec<u8>) {
