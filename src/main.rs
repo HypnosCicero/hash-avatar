@@ -11,10 +11,10 @@ fn main() {
         returns the first word it finds in that string. \
         If the function doesn’t find a space in the string, \
         the whole string must be one word, so the entire string should be returned.";
-    let case_with_utf8 = "你好";
+    let case_with_utf8_1 = "你好";
 
     // test simple case
-    // let processed_case_simple = lrc_hash_v1(case_simple, 128);
+    let processed_case_simple = lrc_hash_v1(case_simple, 128);
     println!("Test simple funtion result:");
 
     // test distribution case
@@ -25,7 +25,7 @@ fn main() {
     // println!("processed_case_distribution2 = {processed_case_distribution2}");
 
     // test long test case
-    let processed_case_long_text = lrc_hash_v1(case_long_text, 128);
+    // let processed_case_long_text = lrc_hash_v1(case_long_text, 128);
     println!("Test simple function long text result:");
 }
 
