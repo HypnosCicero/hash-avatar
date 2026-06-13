@@ -23,11 +23,11 @@ fn main() {
     // println!("processed_case_distribution2 = {processed_case_distribution2}");
 
     // test long test case
-    let processed_case_long_text = lrc_hash_v1(case_long_text, 128);
-    println!(
-        "Test simple function long text result: {}",
-        processed_case_long_text
-    );
+    //let processed_case_long_text = lrc_hash_v1(case_long_text, 128);
+    // println!(
+    //     "Test simple function long text result: {}",
+    //     processed_case_long_text
+    // );
 }
 
 fn lrc_hash_v1(target: &str, code_length: usize) -> String {
@@ -43,10 +43,11 @@ fn lrc_hash_v1(target: &str, code_length: usize) -> String {
         }
     }
     print_vector(&temp_vector);
-    let remainder = temp_vector.len() % code_length;
+    let mut code_length_bit = code_length * 8;
+    let remainder = temp_vector.len() % code_length_bit;
     if remainder > 0 {
         let mut index = 0;
-        while index < (code_length - remainder) {
+        while index < (code_length_bit - remainder) {
             temp_vector.push(0);
             index += 1;
         }
@@ -55,9 +56,9 @@ fn lrc_hash_v1(target: &str, code_length: usize) -> String {
 
     print_vector(&temp_vector);
 
-    if temp_vector.len() / code_length == 1 {
+    if temp_vector.len() / code_length_bit == 1 {
         let mut index = 0;
-        while index < code_length {
+        while index < code_length_bit {
             temp_vector.push(0);
             index += 1;
         }
@@ -67,25 +68,26 @@ fn lrc_hash_v1(target: &str, code_length: usize) -> String {
 
     // TODO: the process method mite be error
     let mut len_time = 0;
-    let mut result_vector: Vec<u8> = Vec::from(&temp_vector[..code_length]);
+    let mut pre_result_vector: Vec<u8> = Vec::from(&temp_vector[..code_length_bit]);
     println!("clone finished");
-    print_vector(&result_vector);
+    print_vector(&pre_result_vector);
     println!("\nstart process");
-    while len_time < (temp_vector.len() / code_length) - 1 {
+    while len_time < (temp_vector.len() / code_length_bit) - 1 {
         //pent is process each number time
         let mut pent = 0;
         println!("start process innel");
-        while pent < code_length {
+        while pent < code_length_bit {
             println!("now the first index {}", pent);
-            println!("now the first result {}", result_vector[pent]);
-            println!("now the second index {}", len_time * code_length + pent);
+            println!("now the first result {}", pre_result_vector[pent]);
+            println!("now the second index {}", len_time * code_length_bit + pent);
             println!(
                 "now the second resutl {}",
-                temp_vector[(len_time + 1) * code_length + pent]
+                temp_vector[(len_time + 1) * code_length_bit + pent]
             );
-            let result_x = result_vector[pent] ^ temp_vector[(len_time + 1) * code_length + pent];
+            let result_x =
+                pre_result_vector[pent] ^ temp_vector[(len_time + 1) * code_length_bit + pent];
             println!("there are reuslt {}\n", result_x);
-            result_vector[pent] = result_x;
+            pre_result_vector[pent] = result_x;
             pent += 1;
         }
         len_time += 1;
@@ -93,13 +95,31 @@ fn lrc_hash_v1(target: &str, code_length: usize) -> String {
     println!("end process\n");
     println!(
         "are they same ? a: {}",
-        jugetment_same(&test_vector_a, &result_vector)
+        jugetment_same(&test_vector_a, &pre_result_vector)
     );
 
-    if result_vector.len() != code_length {
+    if pre_result_vector.len() != code_length_bit {
         println!("this result vector is ILLEGAL!!");
     }
+
     println!("this result vector is LEGALL!!!!!!");
+
+    let mut result_vector: Vec<u8> = Vec::new();
+
+    let mut index = 0;
+    while index < pre_result_vector.len() / 8 {
+        let mut b_index = 0;
+        let mut temp_result = 0;
+        while b_index < 8 {
+            temp_result = pre_result_vector[8 * index + b_index] << (7 - b_index);
+            b_index += 1;
+        }
+        result_vector.push(temp_result);
+        index += 1;
+    }
+    print!("the result_vector = ");
+    print_vector(&result_vector);
+
     let result = match String::from_utf8(result_vector) {
         Ok(string) => string,
         Err(e) => {
