@@ -1,15 +1,18 @@
 fn main() {
     let case_simple = "Hello World";
-    let case_distribution1 = "test1";
-    let case_distribution2 = "test2";
-    let case_long_text = "Slices let you reference a contiguous sequence of elements in a collection. \
+    // let case_distribution1 = "test1";
+    // let case_distribution2 = "test2";
+    /*
+    * let case_long_text = "Slices let you reference a contiguous sequence of elements in a collection. \
         A slice is a kind of reference, so it does not have ownership. \
         Here’s a small programming problem: \
         Write a function that takes a string of words separated by spaces and \
         returns the first word it finds in that string. \
         If the function doesn’t find a space in the string, \
         the whole string must be one word, so the entire string should be returned.";
-    let case_with_utf8_1 = "你好";
+    */
+
+    // let case_with_utf8_1 = "你好";
 
     // test simple case
     let processed_case_simple = lrc_hash_v1(case_simple, 128);
@@ -18,7 +21,7 @@ fn main() {
     // test distribution case
     // let processed_case_distribution1 = hash_process_simple(case_distribution1.as_bytes());
     // let processed_case_distribution2 = hash_process_simple(case_distribution2.as_bytes());
-    println!("Test simple function distribution result:");
+    // println!("Test simple function distribution result:");
     // println!("processed_case_distribution1 = {processed_case_distribution1}");
     // println!("processed_case_distribution2 = {processed_case_distribution2}");
 
@@ -43,7 +46,7 @@ fn lrc_hash_v1(target: &str, code_length: usize) -> String {
         }
     }
     print_vector(&temp_vector);
-    let mut code_length_bit = code_length * 8;
+    let code_length_bit = code_length * 8;
     let remainder = temp_vector.len() % code_length_bit;
     if remainder > 0 {
         let mut index = 0;
@@ -52,6 +55,7 @@ fn lrc_hash_v1(target: &str, code_length: usize) -> String {
             index += 1;
         }
     }
+    // test process
     let test_vector_a = temp_vector.clone();
 
     print_vector(&temp_vector);
@@ -66,7 +70,6 @@ fn lrc_hash_v1(target: &str, code_length: usize) -> String {
 
     print_vector(&temp_vector);
 
-    // TODO: the process method mite be error
     let mut len_time = 0;
     let mut pre_result_vector: Vec<u8> = Vec::from(&temp_vector[..code_length_bit]);
     println!("clone finished");
@@ -79,7 +82,10 @@ fn lrc_hash_v1(target: &str, code_length: usize) -> String {
         while pent < code_length_bit {
             println!("now the first index {}", pent);
             println!("now the first result {}", pre_result_vector[pent]);
-            println!("now the second index {}", len_time * code_length_bit + pent);
+            println!(
+                "now the second index {}",
+                (len_time + 1) * code_length_bit + pent
+            );
             println!(
                 "now the second resutl {}",
                 temp_vector[(len_time + 1) * code_length_bit + pent]
@@ -111,7 +117,7 @@ fn lrc_hash_v1(target: &str, code_length: usize) -> String {
         let mut b_index = 0;
         let mut temp_result = 0;
         while b_index < 8 {
-            temp_result = pre_result_vector[8 * index + b_index] << (7 - b_index);
+            temp_result += pre_result_vector[8 * index + b_index] << (7 - b_index);
             b_index += 1;
         }
         result_vector.push(temp_result);
