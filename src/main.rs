@@ -44,106 +44,109 @@ fn main() {
 }
 
 fn lrc_hash_v1(target: &str, code_length: usize) -> String {
-    let orgin_data = target.as_bytes();
+    let inner_data_length = code_length * 8;
+    let paded_vector = padding_data_v1(target.as_bytes(), inner_data_length);
+    let calculated_vector = calculate_hash_v1(paded_vector, inner_data_length);
+
+    if calculated_vector.len() != inner_data_length {
+        println!("this result vector is ILLEGAL!!");
+    }
+
+    println!("this result vector is LEGALL!!!!!!");
+    decode_data_v1(calculated_vector)
+}
+
+fn padding_data_v1(orgin_data: &[u8], data_length: usize) -> Vec<u8> {
     let mut temp_vector: Vec<u8> = Vec::new();
     for temp_data in orgin_data {
         let mut i = 7;
         while i >= 0 {
-            // check out the
             let data = *temp_data >> i & 1;
             temp_vector.push(data);
             i -= 1;
         }
     }
     print_vector(&temp_vector);
-    let code_length_bit = code_length * 8;
-    let remainder = temp_vector.len() % code_length_bit;
+    let remainder = temp_vector.len() % data_length;
     if remainder > 0 {
         let mut index = 0;
-        while index < (code_length_bit - remainder) {
+        while index < (data_length - remainder) {
             temp_vector.push(0);
             index += 1;
         }
     }
-    // test process
-    let test_vector_a = temp_vector.clone();
 
     print_vector(&temp_vector);
 
-    if temp_vector.len() / code_length_bit == 1 {
+    if temp_vector.len() / data_length == 1 {
         let mut index = 0;
-        while index < code_length_bit {
+        while index < data_length {
             temp_vector.push(0);
             index += 1;
         }
     }
 
     print_vector(&temp_vector);
+    temp_vector
+}
 
+fn calculate_hash_v1(paded_vector: Vec<u8>, data_length: usize) -> Vec<u8> {
     let mut len_time = 0;
-    let mut pre_result_vector: Vec<u8> = Vec::from(&temp_vector[..code_length_bit]);
+    let mut calculate_vector: Vec<u8> = Vec::from(&paded_vector[..data_length]);
     println!("clone finished");
-    print_vector(&pre_result_vector);
+    print_vector(&calculate_vector);
     println!("\nstart process");
-    while len_time < (temp_vector.len() / code_length_bit) - 1 {
+    while len_time < (paded_vector.len() / data_length) - 1 {
         //pent is process each number time
         let mut pent = 0;
         println!("start process innel");
-        while pent < code_length_bit {
+        while pent < data_length {
             println!("now the first index {}", pent);
-            println!("now the first result {}", pre_result_vector[pent]);
+            println!("now the first result {}", calculate_vector[pent]);
             println!(
                 "now the second index {}",
-                (len_time + 1) * code_length_bit + pent
+                (len_time + 1) * data_length + pent
             );
             println!(
                 "now the second resutl {}",
-                temp_vector[(len_time + 1) * code_length_bit + pent]
+                paded_vector[(len_time + 1) * data_length + pent]
             );
             let result_x =
-                pre_result_vector[pent] ^ temp_vector[(len_time + 1) * code_length_bit + pent];
+                calculate_vector[pent] ^ paded_vector[(len_time + 1) * data_length + pent];
             println!("there are reuslt {}\n", result_x);
-            pre_result_vector[pent] = result_x;
+            calculate_vector[pent] = result_x;
             pent += 1;
         }
         len_time += 1;
     }
     println!("end process\n");
-    println!(
-        "are they same ? a: {}",
-        jugetment_same(&test_vector_a, &pre_result_vector)
-    );
+    calculate_vector
+}
 
-    if pre_result_vector.len() != code_length_bit {
-        println!("this result vector is ILLEGAL!!");
-    }
-
-    println!("this result vector is LEGALL!!!!!!");
-
+fn decode_data_v1(calculated_vector: Vec<u8>) -> String {
     let mut result_vector: Vec<u8> = Vec::new();
-
     let mut index = 0;
-    while index < pre_result_vector.len() / 8 {
-        let mut b_index = 0;
-        let mut temp_result = 0;
-        while b_index < 8 {
-            temp_result += pre_result_vector[8 * index + b_index] << (7 - b_index);
-            b_index += 1;
+    while index < calculated_vector.len() / 8 {
+        let mut bit_index = 0;
+        let mut bit_result = 0;
+        while bit_index < 8 {
+            bit_result += calculated_vector[8 * index + bit_index] << (7 - bit_index);
+            bit_index += 1;
         }
-        result_vector.push(temp_result);
+        result_vector.push(bit_result);
         index += 1;
     }
     print!("the result_vector = ");
     print_vector(&result_vector);
 
-    let result = match String::from_utf8(result_vector) {
+    let result_data = match String::from_utf8(result_vector) {
         Ok(string) => string,
         Err(e) => {
             panic!("decoding error becose: {}", e);
         }
     };
-    println!("The Result = {}", result);
-    result
+    println!("The Result = {}", result_data);
+    result_data
 }
 
 fn print_vector(vector: &Vec<u8>) {
@@ -151,15 +154,4 @@ fn print_vector(vector: &Vec<u8>) {
         print!("{}", *e);
     }
     println!();
-}
-
-fn jugetment_same(vector_a: &Vec<u8>, vector_b: &Vec<u8>) -> bool {
-    let mut index = 0;
-    while index < vector_a.len() {
-        if vector_a[index] != vector_b[index] {
-            return false;
-        }
-        index += 1;
-    }
-    true
 }
