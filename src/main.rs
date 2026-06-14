@@ -11,6 +11,9 @@ fn main() {
         If the function doesn’t find a space in the string, \
         the whole string must be one word, so the entire string should be returned.";
     */
+    let mid_long_test = "Slices let you reference a contiguous sequence of elements in a collection. \
+        A slice is a kind of reference, so it does not have ownership. \
+        Here’s a small programming problem:";
 
     // let case_with_utf8_1 = "你好";
 
@@ -26,11 +29,18 @@ fn main() {
     // println!("processed_case_distribution2 = {processed_case_distribution2}");
 
     // test long test case
-    //let processed_case_long_text = lrc_hash_v1(case_long_text, 128);
+    // let processed_case_long_text = lrc_hash_v1(case_long_text, 128);
     // println!(
     //     "Test simple function long text result: {}",
     //     processed_case_long_text
     // );
+
+    // test mid test case
+    let processed_case_mid_long_test = lrc_hash_v1(mid_long_test, 128);
+    println!(
+        "Test simple function mid long text result : {}",
+        processed_case_mid_long_test
+    );
 }
 
 fn lrc_hash_v1(target: &str, code_length: usize) -> String {
