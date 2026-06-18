@@ -1,3 +1,5 @@
+use ascii::{self, AsciiString, IntoAsciiString};
+
 fn main() {
     let case_simple = "Hello World";
     // let case_distribution1 = "test1";
@@ -43,7 +45,7 @@ fn main() {
     );
 }
 
-fn lrc_hash_v1(target: &str, code_length: usize) -> String {
+fn lrc_hash_v1(target: &str, code_length: usize) -> AsciiString {
     let inner_data_length = code_length * 8;
     let paded_vector = padding_data_v1(target.as_bytes(), inner_data_length);
     let calculated_vector = calculate_hash_v1(paded_vector, inner_data_length);
@@ -123,7 +125,7 @@ fn calculate_hash_v1(paded_vector: Vec<u8>, data_length: usize) -> Vec<u8> {
     calculate_vector
 }
 
-fn decode_data_v1(calculated_vector: Vec<u8>) -> String {
+fn decode_data_v1(calculated_vector: Vec<u8>) -> AsciiString {
     let mut result_vector: Vec<u8> = Vec::new();
     let mut index = 0;
     while index < calculated_vector.len() / 8 {
@@ -139,12 +141,21 @@ fn decode_data_v1(calculated_vector: Vec<u8>) -> String {
     print!("the result_vector = ");
     print_vector(&result_vector);
 
-    let result_data = match String::from_utf8(result_vector) {
+    /*
+    * let result_data = match String::from_utf8(result_vector) {
         Ok(string) => string,
         Err(e) => {
             panic!("decoding error becose: {}", e);
         }
     };
+    */
+    // let result_data = match result_vector.into_ascii_string_un() {
+    //     Ok(result) => result,
+    //     Err(e) => {
+    //         panic!("decoding error because: {}", e);
+    //     }
+    // };
+    let result_data = unsafe { result_vector.into_ascii_string_unchecked() };
     println!("The Result = {}", result_data);
     result_data
 }
