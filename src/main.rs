@@ -1,7 +1,4 @@
-use std::collections::binary_heap;
-
 use ascii::{self, AsciiString, IntoAsciiString};
-
 fn main() {
     let case_simple = "Hello World";
     // let case_distribution1 = "test1";
@@ -149,22 +146,12 @@ fn decode_data_v1(calculated_vector: Vec<u8>) -> AsciiString {
     }
     print!("the result_vector = ");
     print_vector(&result_vector);
-
-    /*
-    * let result_data = match String::from_utf8(result_vector) {
-        Ok(string) => string,
+    let result_data = match result_vector.into_ascii_string() {
+        Ok(result) => result,
         Err(e) => {
-            panic!("decoding error becose: {}", e);
+            panic!("decoding error because: {}", e);
         }
     };
-    */
-    // let result_data = match result_vector.into_ascii_string_un() {
-    //     Ok(result) => result,
-    //     Err(e) => {
-    //         panic!("decoding error because: {}", e);
-    //     }
-    // };
-    let result_data = unsafe { result_vector.into_ascii_string_unchecked() };
     println!("The Result = {}", result_data);
     result_data
 }
