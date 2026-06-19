@@ -15,7 +15,9 @@ fn main() {
     */
     let mid_long_test = "Slices let you reference a contiguous sequence of elements in a collection. \
         A slice is a kind of reference, so it does not have ownership. \
-        Here’s a small programming problem:";
+        Here’s a small programming problem: \
+        Write a function that takes a string of words separated by spaces and \
+        returns the first word it finds in that string.";
 
     // let case_with_utf8_1 = "你好";
 
@@ -68,6 +70,7 @@ fn padding_data_v1(orgin_data: &[u8], data_length: usize) -> Vec<u8> {
             i -= 1;
         }
     }
+
     print_vector(&temp_vector);
     let remainder = temp_vector.len() % data_length;
     if remainder > 0 {
@@ -132,7 +135,7 @@ fn decode_data_v1(calculated_vector: Vec<u8>) -> AsciiString {
         let mut bit_index = 0;
         let mut bit_result = 0;
         while bit_index < 8 {
-            bit_result += calculated_vector[8 * index + bit_index] << (7 - bit_index);
+            bit_result |= calculated_vector[8 * index + bit_index] << (7 - bit_index);
             bit_index += 1;
         }
         result_vector.push(bit_result);
