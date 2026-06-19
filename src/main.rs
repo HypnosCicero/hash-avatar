@@ -1,3 +1,5 @@
+use std::collections::binary_heap;
+
 use ascii::{self, AsciiString, IntoAsciiString};
 
 fn main() {
@@ -49,8 +51,9 @@ fn main() {
 
 fn lrc_hash_v1(target: &str, code_length: usize) -> AsciiString {
     let inner_data_length = code_length * 8;
-    let paded_vector = padding_data_v1(target.as_bytes(), inner_data_length);
-    let calculated_vector = calculate_hash_v1(paded_vector, inner_data_length);
+    let binary_vector = decode2binary_vector(target.as_bytes());
+    let padded_vector = padding_data_v1(binary_vector, inner_data_length);
+    let calculated_vector = calculate_hash_v1(padded_vector, inner_data_length);
 
     if calculated_vector.len() != inner_data_length {
         println!("this result vector is ILLEGAL!!");
@@ -59,40 +62,43 @@ fn lrc_hash_v1(target: &str, code_length: usize) -> AsciiString {
     println!("this result vector is LEGALL!!!!!!");
     decode_data_v1(calculated_vector)
 }
-
-fn padding_data_v1(orgin_data: &[u8], data_length: usize) -> Vec<u8> {
-    let mut temp_vector: Vec<u8> = Vec::new();
+fn decode2binary_vector(orgin_data: &[u8]) -> Vec<u8> {
+    let mut binary_vector: Vec<u8> = Vec::new();
     for temp_data in orgin_data {
         let mut i = 7;
         while i >= 0 {
             let data = *temp_data >> i & 1;
-            temp_vector.push(data);
+            binary_vector.push(data);
             i -= 1;
         }
     }
+    binary_vector
+}
 
-    print_vector(&temp_vector);
-    let remainder = temp_vector.len() % data_length;
+fn padding_data_v1(binary_vector: Vec<u8>, data_length: usize) -> Vec<u8> {
+    print_vector(&binary_vector);
+    let mut paded_vector = binary_vector;
+    let remainder = paded_vector.len() % data_length;
     if remainder > 0 {
         let mut index = 0;
         while index < (data_length - remainder) {
-            temp_vector.push(0);
+            paded_vector.push(0);
             index += 1;
         }
     }
 
-    print_vector(&temp_vector);
+    print_vector(&paded_vector);
 
-    if temp_vector.len() / data_length == 1 {
+    if paded_vector.len() / data_length == 1 {
         let mut index = 0;
         while index < data_length {
-            temp_vector.push(0);
+            paded_vector.push(0);
             index += 1;
         }
     }
 
-    print_vector(&temp_vector);
-    temp_vector
+    print_vector(&paded_vector);
+    paded_vector
 }
 
 fn calculate_hash_v1(paded_vector: Vec<u8>, data_length: usize) -> Vec<u8> {
