@@ -13,7 +13,8 @@ pub fn lrc_hash_v1(target: &str, code_length: usize) -> AsciiString {
     println!("this result vector is LEGALL!!!!!!");
     decode_data_v1(calculated_vector)
 }
-fn decode2binary_vector(orgin_data: &[u8]) -> Vec<u8> {
+
+pub(crate) fn decode2binary_vector(orgin_data: &[u8]) -> Vec<u8> {
     let mut binary_vector: Vec<u8> = Vec::new();
     for temp_data in orgin_data {
         let mut i = 7;
@@ -26,7 +27,7 @@ fn decode2binary_vector(orgin_data: &[u8]) -> Vec<u8> {
     binary_vector
 }
 
-fn padding_data_v1(binary_vector: Vec<u8>, data_length: usize) -> Vec<u8> {
+pub(crate) fn padding_data_v1(binary_vector: Vec<u8>, data_length: usize) -> Vec<u8> {
     print_vector(&binary_vector);
     let mut paded_vector = binary_vector;
     let remainder = paded_vector.len() % data_length;
@@ -52,7 +53,7 @@ fn padding_data_v1(binary_vector: Vec<u8>, data_length: usize) -> Vec<u8> {
     paded_vector
 }
 
-fn calculate_hash_v1(paded_vector: Vec<u8>, data_length: usize) -> Vec<u8> {
+pub(crate) fn calculate_hash_v1(paded_vector: Vec<u8>, data_length: usize) -> Vec<u8> {
     let mut len_time = 0;
     let mut calculate_vector: Vec<u8> = Vec::from(&paded_vector[..data_length]);
     println!("clone finished");
