@@ -22,14 +22,14 @@ fn main() {
 
     // test simple case
     println!("###################### TEST SIMPLE CASE ######################");
-    let processed_case_simple = hash::lrc_hash_v1(case_simple, 128);
+    let processed_case_simple = hash::algorithm::lrc_hash_v1(case_simple, 128);
     println!("Test simple funtion result: {processed_case_simple}");
     println!("###################### TEST SIMPLE CASE ######################\n");
 
     // test distribution case
     println!("###################### TEST DISTRIBUTION CASE ######################");
-    let processed_case_distribution1 = hash::lrc_hash_v1(case_distribution1, 128);
-    let processed_case_distribution2 = hash::lrc_hash_v1(case_distribution2, 128);
+    let processed_case_distribution1 = hash::algorithm::lrc_hash_v1(case_distribution1, 128);
+    let processed_case_distribution2 = hash::algorithm::lrc_hash_v1(case_distribution2, 128);
     println!("Test simple function distribution result:");
     println!("processed_case_distribution1 = {processed_case_distribution1}");
     println!("processed_case_distribution2 = {processed_case_distribution2}");
@@ -37,19 +37,19 @@ fn main() {
 
     // test mid text case
     println!("###################### TEST MID TEXT CASE ######################");
-    let processed_case_mid_long_test = hash::lrc_hash_v1(mid_long_test, 128);
+    let processed_case_mid_long_test = hash::algorithm::lrc_hash_v1(mid_long_test, 128);
     println!("Test simple function mid long text result : {processed_case_mid_long_test}");
     println!("###################### TEST MID TEXT CASE ######################\n");
 
     // test long text case
     println!("###################### TEST LONG TEXT CASE ######################");
-    let processed_case_long_text = hash::lrc_hash_v1(case_long_text, 128);
+    let processed_case_long_text = hash::algorithm::lrc_hash_v1(case_long_text, 128);
     println!("Test simple function long text result: {processed_case_long_text}");
     println!("###################### TEST LONG TEXT CASE ######################\n");
 
     // test utf-8 case
     println!("###################### TEST UTF-8 TEXT CASE ######################");
-    let processed_case_utf8_text = hash::lrc_hash_v1(case_with_utf8_1, 128);
+    let processed_case_utf8_text = hash::algorithm::lrc_hash_v1(case_with_utf8_1, 128);
     println!("The simple function utf8 text result: {processed_case_utf8_text}");
     println!("###################### TEST UTF-8 TEXT CASE ######################");
 }
