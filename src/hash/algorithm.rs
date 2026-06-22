@@ -2,9 +2,9 @@ use ascii::{self, AsciiString, IntoAsciiString};
 
 pub fn lrc_hash_v1(target: &str, code_length: usize) -> AsciiString {
     let inner_data_length = code_length * 8;
-    let binary_vector = decode2binary_vector(target.as_bytes());
-    let padded_vector = padding_data_v1(binary_vector, inner_data_length);
-    let calculated_vector = calculate_hash_v1(padded_vector, inner_data_length);
+    let mut binary_vector = decode2binary_vector(target.as_bytes());
+    padding_data_v1(&mut binary_vector, inner_data_length);
+    let calculated_vector = calculate_hash_v1(binary_vector, inner_data_length);
 
     if calculated_vector.len() != inner_data_length {
         println!("this result vector is ILLEGAL!!");
@@ -27,30 +27,27 @@ pub(crate) fn decode2binary_vector(orgin_data: &[u8]) -> Vec<u8> {
     binary_vector
 }
 
-pub(crate) fn padding_data_v1(binary_vector: Vec<u8>, data_length: usize) -> Vec<u8> {
-    print_vector(&binary_vector);
-    let mut paded_vector = binary_vector;
-    let remainder = paded_vector.len() % data_length;
+pub(crate) fn padding_data_v1(pading_vector: &mut Vec<u8>, data_length: usize) {
+    print_vector(pading_vector);
+    let remainder = pading_vector.len() % data_length;
     if remainder > 0 {
         let mut index = 0;
         while index < (data_length - remainder) {
-            paded_vector.push(0);
+            pading_vector.push(0);
             index += 1;
         }
     }
 
-    print_vector(&paded_vector);
+    print_vector(pading_vector);
 
-    if paded_vector.len() / data_length == 1 {
+    if pading_vector.len() / data_length == 1 {
         let mut index = 0;
         while index < data_length {
-            paded_vector.push(0);
+            pading_vector.push(0);
             index += 1;
         }
     }
-
-    print_vector(&paded_vector);
-    paded_vector
+    print_vector(&pading_vector);
 }
 
 pub(crate) fn calculate_hash_v1(paded_vector: Vec<u8>, data_length: usize) -> Vec<u8> {
