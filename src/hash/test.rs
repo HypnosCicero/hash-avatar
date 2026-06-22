@@ -18,4 +18,16 @@ mod hash_algorithm_tests {
         }
         result
     }
+
+    #[test]
+    fn test_padding_data_v1() {
+        let mut test_vector = vec![1, 2, 3];
+        let origin_vector_length = test_vector.len();
+        let standard_of_data_length = 128 * 8;
+        hash::algorithm::padding_data_v1(&mut test_vector, standard_of_data_length);
+        if origin_vector_length < standard_of_data_length {
+            assert_eq!(test_vector.len(), standard_of_data_length * 2);
+        }
+        assert!(test_vector.len() % standard_of_data_length == 0);
+    }
 }
