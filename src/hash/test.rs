@@ -13,6 +13,7 @@ mod hash_algorithm_tests {
         for elemnt in vector {
             if *elemnt > 1 {
                 result = false;
+                break;
             }
         }
         result
