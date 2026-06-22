@@ -25,9 +25,10 @@ mod hash_algorithm_tests {
         let origin_vector_length = test_vector.len();
         let standard_of_data_length = 128 * 8;
         hash::algorithm::padding_data_v1(&mut test_vector, standard_of_data_length);
+
+        assert!(test_vector.len() % standard_of_data_length == 0);
         if origin_vector_length < standard_of_data_length {
             assert_eq!(test_vector.len(), standard_of_data_length * 2);
         }
-        assert!(test_vector.len() % standard_of_data_length == 0);
     }
 }
