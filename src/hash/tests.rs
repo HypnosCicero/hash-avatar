@@ -84,6 +84,7 @@ fn prepare_test_vectors(vector1: &mut Vec<u8>, vector2: &mut Vec<u8>, length: us
         } else {
             vector2.push(0);
         }
+        index += 1;
     }
 }
 
@@ -102,6 +103,7 @@ fn prepare_result_vectors(
         } else {
             result_vector1.push(0);
         }
+        index += 1;
     }
 
     // TODO: it can be pick up and be a new function
@@ -112,5 +114,6 @@ fn prepare_result_vectors(
         } else {
             result_vector2.push(0);
         }
+        index += 1;
     }
 }
