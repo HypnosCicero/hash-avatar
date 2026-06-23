@@ -5,12 +5,6 @@ pub fn lrc_hash_v1(target: &str, code_length: usize) -> AsciiString {
     let mut binary_vector = decode2binary_vector(target.as_bytes());
     padding_data_v1(&mut binary_vector, inner_data_length);
     let calculated_vector = calculate_hash_v1(binary_vector, inner_data_length);
-
-    if calculated_vector.len() != inner_data_length {
-        println!("this result vector is ILLEGAL!!");
-    }
-
-    println!("this result vector is LEGALL!!!!!!");
     decode_data_v1(calculated_vector)
 }
 
