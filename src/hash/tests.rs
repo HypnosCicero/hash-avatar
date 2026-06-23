@@ -57,7 +57,7 @@ fn test_calculate_hash_v1() {
         hash::algorithm::calculate_hash_v1(test_vector1, standard_of_data_length);
     let un_test_result_vector2 =
         hash::algorithm::calculate_hash_v1(test_vector2, standard_of_data_length);
-
+    // to know slice eq function in rust base
     assert!(un_test_result_vector1 == result_vector1);
     assert!(un_test_result_vector2 == result_vector2);
 }
