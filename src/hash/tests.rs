@@ -81,11 +81,11 @@ fn prepare_result_vectors(
     push_binary_vector(result_vector2, time_length, 1, 0, time_length - 1);
 }
 
-fn push_binary_vector(
-    target_vector: &mut Vec<u8>,
+fn push_binary_vector<T: Copy>(
+    target_vector: &mut Vec<T>,
     around: usize,
-    pushdata1: u8,
-    pushdata2: u8,
+    pushdata1: T,
+    pushdata2: T,
     conditon1: usize,
 ) {
     let mut index = 0;
