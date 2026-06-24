@@ -4,6 +4,10 @@ use crate::hash;
 fn test_decode2binary_vector() {
     let binary_vector = hash::algorithm::decode2binary_vector("123".as_bytes());
     assert!(judge_u8_vector_is_binary(&binary_vector));
+    let stander_vector: Vec<u8> = vec![
+        0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1,
+    ];
+    assert_eq!(binary_vector, stander_vector);
 }
 
 fn judge_u8_vector_is_binary(vector: &Vec<u8>) -> bool {
