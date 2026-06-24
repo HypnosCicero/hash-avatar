@@ -77,7 +77,7 @@ pub(crate) fn calculate_hash_v1(paded_vector: Vec<u8>, data_length: usize) -> Ve
     calculate_vector
 }
 
-fn decode_data_v1(calculated_vector: Vec<u8>) -> AsciiString {
+pub(crate) fn decode_data_v1(calculated_vector: Vec<u8>) -> AsciiString {
     let mut result_vector: Vec<u8> = Vec::new();
     let mut index = 0;
     while index < calculated_vector.len() / 8 {
