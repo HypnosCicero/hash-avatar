@@ -60,35 +60,14 @@ fn test_calculate_hash_v1() {
 
     assert_eq!(un_test_result_vector1.len(), standard_of_data_length);
     assert_eq!(un_test_result_vector2.len(), standard_of_data_length);
-    // to know slice eq function in rust base
+
     assert!(un_test_result_vector1 == result_vector1);
     assert!(un_test_result_vector2 == result_vector2);
 }
 
 fn prepare_test_vectors(vector1: &mut Vec<u8>, vector2: &mut Vec<u8>, length: usize) {
-    let mut index = 0;
-    let time1_length = length * 2;
-    // TODO: it can be pick up and be a new function
-    while index < time1_length {
-        if index < 3 {
-            vector1.push(1);
-        } else {
-            vector1.push(0);
-        }
-        index += 1;
-    }
-
-    let time2_length = length * 2;
-    index = 0;
-    // TODO: it can be pick up and be a new function
-    while index < time2_length {
-        if index < length - 1 {
-            vector2.push(1);
-        } else {
-            vector2.push(0);
-        }
-        index += 1;
-    }
+    push_binary_vector(vector1, length * 2, 1, 0, 3);
+    push_binary_vector(vector2, length * 2, 1, 0, length - 1);
 }
 
 fn prepare_result_vectors(
@@ -96,26 +75,25 @@ fn prepare_result_vectors(
     result_vector2: &mut Vec<u8>,
     length: usize,
 ) {
-    let mut index = 0;
     let time_length = length;
 
-    // TODO: it can be pick up and be a new function
-    while index < time_length {
-        if index < 3 {
-            result_vector1.push(1);
-        } else {
-            result_vector1.push(0);
-        }
-        index += 1;
-    }
+    push_binary_vector(result_vector1, time_length, 1, 0, 3);
+    push_binary_vector(result_vector2, time_length, 1, 0, time_length - 1);
+}
 
-    // TODO: it can be pick up and be a new function
-    index = 0;
-    while index < time_length {
-        if index < time_length - 1 {
-            result_vector2.push(1);
+fn push_binary_vector(
+    target_vector: &mut Vec<u8>,
+    around: usize,
+    pushdata1: u8,
+    pushdata2: u8,
+    conditon1: usize,
+) {
+    let mut index = 0;
+    while index < around {
+        if index < conditon1 {
+            target_vector.push(pushdata1);
         } else {
-            result_vector2.push(0);
+            target_vector.push(pushdata2);
         }
         index += 1;
     }
