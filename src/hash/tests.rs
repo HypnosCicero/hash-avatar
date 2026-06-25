@@ -117,6 +117,7 @@ fn push_binary_vector<T: Copy>(
     }
 }
 
+// Do not use the same-origin algorithm for testing.
 #[test]
 fn test_decode_hello_rust() {
     let data = vec![
