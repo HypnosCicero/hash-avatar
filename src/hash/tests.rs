@@ -35,6 +35,20 @@ fn test_padding_data_v1() {
     if origin_vector_length < standard_of_data_length {
         assert_eq!(test_vector.len(), standard_of_data_length * 2);
     }
+    assert!(check_padded_vector(&test_vector, origin_vector_length, 0))
+}
+
+fn check_padded_vector(target_vector: &Vec<u8>, start_index: usize, pad_data: u8) -> bool {
+    let mut index = start_index;
+    let mut result = true;
+    while index < target_vector.len() {
+        if (target_vector[index] != pad_data) {
+            result = false;
+            break;
+        }
+        index += 1
+    }
+    result
 }
 
 #[test]
