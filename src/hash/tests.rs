@@ -42,7 +42,7 @@ fn check_padded_vector(target_vector: &Vec<u8>, start_index: usize, pad_data: u8
     let mut index = start_index;
     let mut result = true;
     while index < target_vector.len() {
-        if (target_vector[index] != pad_data) {
+        if target_vector[index] != pad_data {
             result = false;
             break;
         }
