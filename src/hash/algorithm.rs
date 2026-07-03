@@ -22,7 +22,6 @@ pub(crate) fn decode2binary_vector(orgin_data: &[u8]) -> Vec<u8> {
 }
 
 pub(crate) fn padding_data_v1(pading_vector: &mut Vec<u8>, data_length: usize) {
-    print_vector(pading_vector);
     let remainder = pading_vector.len() % data_length;
     if remainder > 0 {
         let mut index = 0;
@@ -32,8 +31,6 @@ pub(crate) fn padding_data_v1(pading_vector: &mut Vec<u8>, data_length: usize) {
         }
     }
 
-    print_vector(pading_vector);
-
     if pading_vector.len() / data_length == 1 {
         let mut index = 0;
         while index < data_length {
@@ -41,39 +38,21 @@ pub(crate) fn padding_data_v1(pading_vector: &mut Vec<u8>, data_length: usize) {
             index += 1;
         }
     }
-    print_vector(&pading_vector);
 }
 
 pub(crate) fn calculate_hash_v1(paded_vector: Vec<u8>, data_length: usize) -> Vec<u8> {
     let mut len_time = 0;
     let mut calculate_vector: Vec<u8> = Vec::from(&paded_vector[..data_length]);
-    println!("clone finished");
-    print_vector(&calculate_vector);
-    println!("\nstart process");
     while len_time < (paded_vector.len() / data_length) - 1 {
-        //pent is process each number time
         let mut pent = 0;
-        println!("start process innel");
         while pent < data_length {
-            println!("now the first index {}", pent);
-            println!("now the first result {}", calculate_vector[pent]);
-            println!(
-                "now the second index {}",
-                (len_time + 1) * data_length + pent
-            );
-            println!(
-                "now the second resutl {}",
-                paded_vector[(len_time + 1) * data_length + pent]
-            );
             let result_x =
                 calculate_vector[pent] ^ paded_vector[(len_time + 1) * data_length + pent];
-            println!("there are reuslt {}\n", result_x);
             calculate_vector[pent] = result_x;
             pent += 1;
         }
         len_time += 1;
     }
-    println!("end process\n");
     calculate_vector
 }
 
@@ -87,24 +66,14 @@ pub(crate) fn decode_data_v1(calculated_vector: Vec<u8>) -> AsciiString {
             bit_result |= calculated_vector[8 * index + bit_index] << (7 - bit_index);
             bit_index += 1;
         }
-        result_vector.push(bit_result);
+        result_vector.push(bit_result % 127);
         index += 1;
     }
-    print!("the result_vector = ");
-    print_vector(&result_vector);
     let result_data = match result_vector.into_ascii_string() {
         Ok(result) => result,
         Err(e) => {
             panic!("decoding error because: {}", e);
         }
     };
-    println!("The Result = {}", result_data);
     result_data
-}
-
-fn print_vector(vector: &Vec<u8>) {
-    for e in vector {
-        print!("{}", *e);
-    }
-    println!();
 }
